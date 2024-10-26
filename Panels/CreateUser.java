@@ -15,7 +15,7 @@ public class CreateUser extends JPanel {
     public JTextField namefield;
     public JTextField passwordfield;
     public JTextField retype;
-    public Path filename = Path.of("");
+    public Path filename = Path.of("assets/users.txt");
     public boolean flag = false;
     public AppInterface parent;
 
@@ -49,7 +49,7 @@ public class CreateUser extends JPanel {
         try {
             String u = "", p = "";
             int flag = 0;
-            File userfile = new File("");
+            File userfile = new File("assets/users.txt");
             Scanner in = new Scanner(userfile);
             while (in.hasNextLine()) {
                 String line = in.nextLine();
@@ -95,7 +95,7 @@ public class CreateUser extends JPanel {
             ch = false;
         } else {
             String info = username + "," + password;
-            File filename = new File("assets\\users.txt");
+            File filename = new File("assets/users.txt");
             try {
                 if (filename.exists() == false) {
                     System.out.println("We had to make a new file.");
@@ -104,6 +104,7 @@ public class CreateUser extends JPanel {
                 PrintWriter out = new PrintWriter(new FileWriter(filename, true));
                 out.append(info + "\n");
                 out.close();
+                parent.displayMenu(username);
                 ch = true;
             } catch (IOException i) {
                 System.out.println("error");
