@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.Color;
@@ -6,6 +7,56 @@ import java.awt.Component;
 import java.awt.event.WindowEvent;
 
 import Panels.*;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+class ScoreChecker {
+    private static final String score_file = "assets/scores.txt";
+
+    public static boolean store_compare_highscore(String type, String name, int score) {
+        boolean scoreUpdated = false;
+        StringBuilder updatedContent = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(score_file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(type)) {
+                    int score_in_file = Integer.parseInt(parts[2]);
+                    if (score_in_file > score) {
+                        updatedContent.append(parts[0]).append(",").append(name).append(",").append(score).append("\n");
+                        scoreUpdated = true;
+                    } else {
+                        updatedContent.append(line).append("\n");
+                    }
+                } else {
+                    updatedContent.append(line).append("\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (scoreUpdated) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(score_file))) {
+                writer.write(updatedContent.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return scoreUpdated;
+    }
+
+    // public static void main(String[] args) {
+    // store_compare_highscore("3x3_multiplayer", "Keshav", 23);
+    // store_compare_highscore("4x4_multiplayer", "Karthik", 90);
+    // }
+
+}
 
 public class mainApp extends JFrame implements AppInterface {
     public JPanel currentPanel;
@@ -20,10 +71,6 @@ public class mainApp extends JFrame implements AppInterface {
         this.setVisible(true);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuPage = new MyMenu(this);
-        menuPage.setLocation(-1000, -1000);
-        menuPage.setVisible(false);
-        add(menuPage);
 
     }
 
@@ -31,12 +78,22 @@ public class mainApp extends JFrame implements AppInterface {
         this.dispose();
     }
 
+    public void checkHighScore(String mode, int moves) {
+        if (ScoreChecker.store_compare_highscore(mode, uname, moves)) {
+            JOptionPane.showMessageDialog(this, "NEW HIGHSCORE SET!", "NEW HIGHSCORE!",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     public void displayMenu(String user) {
         this.remove(currentPanel);
+        menuPage = new MyMenu(this, user);
         currentPanel = menuPage;
         uname = user;
-        menuPage.setVisible(true);
-        menuPage.setLocation(0, 0);
+        menuPage.setBounds(0, 0, 900, 500);
+        this.add(menuPage);
+        revalidate();
+        repaint();
     }
 
     public void call4x4() {
@@ -70,10 +127,7 @@ public class mainApp extends JFrame implements AppInterface {
     }
 
     public void removeChild() {
-        this.remove(currentPanel);
         this.displayMenu(uname);
-        revalidate();
-        repaint();
     }
 
     public void showCreatePage() {
@@ -86,15 +140,24 @@ public class mainApp extends JFrame implements AppInterface {
         repaint();
     }
 
+    public void showLoginPage() {
+        Login obj = new Login(this);
+        this.remove(currentPanel);
+        obj.setBounds(0, 0, 900, 500);
+        currentPanel = obj;
+        add(obj);
+        revalidate();
+        repaint();
+    }
+
     public static void main(String[] args) {
         mainApp Window = new mainApp();
-        // Login loginPage = new Login(Window);
-        Window.uname = "DEV BUILD";
-        MyMenu menu = new MyMenu(Window);
-        Window.currentPanel = menu;
-        menu.setBounds(0, 0, 900, 500);
-        Window.currentPanel = menu;
-        Window.add(menu);
+        Login loginPage = new Login(Window);
+        // Window.uname = "DEV BUILD";
+        // MyMenu menu = new MyMenu(Window);
+        loginPage.setBounds(0, 0, 900, 500);
+        Window.currentPanel = loginPage;
+        Window.add(loginPage);
         Window.revalidate();
         Window.repaint();
     }
