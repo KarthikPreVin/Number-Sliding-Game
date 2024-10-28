@@ -110,8 +110,8 @@ public class Competitive extends JPanel implements KeyListener {
         gamePanel2.setBounds(470, 20, 365, 365);
 
         // Back and moves;
-        backButton.setBackground(Color.BLACK);
-        backButton.setForeground(Color.yellow);
+        backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.BLACK);
         backButton.setFont(new Font("Times New Roman", 1, 20));
         movesLabel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         movesLabel1.setBackground(Color.BLACK);
@@ -159,6 +159,8 @@ public class Competitive extends JPanel implements KeyListener {
             buttonArray2[i].setBounds(90 * (i % 4) + 5, 90 * (i / 4) + 5, 85, 85);
             buttonArray1[i].setBorder(solidBorder);
             buttonArray2[i].setBorder(solidBorder);
+            buttonArray1[i].setFont(new Font("Courier New", 1, 20));
+            buttonArray2[i].setFont(new Font("Courier New", 1, 20));
             buttonArray1[i].addActionListener(e -> {
                 this.requestFocusInWindow();
             });

@@ -11,7 +11,11 @@ public interface AppInterface {
 
     public void displayMenu(String user);
 
+    public void checkHighScore(String mode, int moves);
+
     public void showCreatePage();
+
+    public void showLoginPage();
 
     public void callComp();
 

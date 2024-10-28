@@ -9,7 +9,7 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class Login extends JPanel {
-    public Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+    public Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 3);
     public JButton create;
     public JButton login;
     public Color bg = Color.BLUE;
@@ -24,14 +24,21 @@ public class Login extends JPanel {
         setSize(900, 500);
         setBackground(bg);
         setLayout(null);
+        JLabel head = new JLabel("LOGIN", 0);
+        head.setFont(new Font("Times New Roman", 1, 50));
+        head.setBounds(250, 10, 400, 100);
+        head.setForeground(Color.BLACK);
+        add(head);
         create = new JButton("Create Account");
         login = new JButton("Login");
-        create.setBounds(325, 400, 100, 30);
+        create.setBounds(250, 330, 200, 50);
         create.setBorder(solidBorder);
         create.setBackground(Color.YELLOW);
-        login.setBounds(475, 400, 100, 30);
+        create.setFont(new Font("Times New Roman", 1, 18));
+        login.setBounds(500, 330, 200, 50);
         login.setBorder(solidBorder);
         login.setBackground(Color.YELLOW);
+        login.setFont(new Font("Times New Roman", 1, 18));
         add(create);
         add(login);
         namelabel = new JLabel("Enter Username", 0);
@@ -63,8 +70,8 @@ public class Login extends JPanel {
             // JButton clickedButton = (JButton) e.getSource();
             final String username = namefield.getText();
             final String password = passwordfield.getText();
-            System.out.println("Username: " + username);
-            System.out.println("Password: " + password);
+            // System.out.println("Username: " + username);
+            // System.out.println("Password: " + password);
             checkUser(username, password);
 
         });
@@ -85,28 +92,42 @@ public class Login extends JPanel {
             Scanner in = new Scanner(userfile);
             while (in.hasNextLine()) {
                 String line = in.nextLine();
-                System.out.println(line);
                 int i = 0, beg = 0;
-                while (line.charAt(i) != '\0') {
+                while (line.charAt(i) != '\n') {
                     if (line.charAt(i) == ',') {
                         u = line.substring(beg, i);
-                        System.out.println(u);
+                        // System.out.println("UNAME: " + u);
                         p = line.substring(i + 1);
-                        System.out.println(p);
-                        if (u.equals(username) && p.equals(password)) {
-                            flag = 1;
-                        }
+                        // System.out.println("PASS : " + p);
                         break;
                     }
                     i++;
                 }
+                if (u.equals(username) && p.equals(password)) {
+                    flag = 1;
+                    break;
+                } else if (u.equals(username)) {
+                    flag = 2;
+                    break;
+                } else {
+                    flag = 0;
+                }
+            }
             if (flag == 1) {
                 parent.displayMenu(username);
                 return true;
+            } else if (flag == 2) {
+                JOptionPane.showMessageDialog(this, "WRONG PASSWORD!", "COULDN'T LOGIN",
+                        JOptionPane.WARNING_MESSAGE);
+                // System.out.println("Wrong Password");
+                return false;
             } else {
-                System.out.println("Wrong Password");
+                JOptionPane.showMessageDialog(this, "USERNAME DOESN'T EXIST", "COULDN'T LOGIN",
+                        JOptionPane.WARNING_MESSAGE);
+                // System.out.println("USERNAME DOESNT EXIST!");
                 return false;
             }
+
         } catch (FileNotFoundException f) {
             System.out.println("File Not Found");
             exit(0);

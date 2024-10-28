@@ -69,8 +69,8 @@ public class App3_3 extends JPanel {
         shuffleButton.setForeground(Color.yellow);
         shuffleButton.setFont(new Font("Times New Roman", 1, 20));
 
-        backButton.setBackground(Color.BLACK);
-        backButton.setForeground(Color.yellow);
+        backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.BLACK);
         backButton.setFont(new Font("Times New Roman", 1, 20));
 
         Labelmoves.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -115,6 +115,7 @@ public class App3_3 extends JPanel {
             buttonArray[i].setBounds(120 * (i % 3) + 5, 120 * (i / 3) + 5, 115, 115);
             // buttonArray[i].setBounds(90 * (i % 3) + 5, 90 * (i / 3) + 5, 85, 85);
             buttonArray[i].setBorder(solidBorder);
+            buttonArray[i].setFont(new Font("Courier New", 1, 20));
             buttonArray[i].addActionListener(e -> {
                 JButton clickedButton = (JButton) e.getSource();
                 String buttonText = clickedButton.getText();
@@ -186,6 +187,7 @@ public class App3_3 extends JPanel {
             Labelmoves.setText("MOVES : " + this.moves);
             if (checkWinner()) {
                 JOptionPane.showMessageDialog(this, "You WIN!", "Winner!", JOptionPane.INFORMATION_MESSAGE);
+                parent.checkHighScore("3x3_multiplayer", this.moves);
             }
         }
         return 1;

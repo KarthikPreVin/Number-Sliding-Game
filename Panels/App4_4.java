@@ -74,8 +74,8 @@ public class App4_4 extends JPanel {
         shuffleButton.setForeground(Color.yellow);
         shuffleButton.setFont(new Font("Times New Roman", 1, 20));
 
-        backButton.setBackground(Color.BLACK);
-        backButton.setForeground(Color.yellow);
+        backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.BLACK);
         backButton.setFont(new Font("Times New Roman", 1, 20));
 
         Labelmoves.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -114,9 +114,11 @@ public class App4_4 extends JPanel {
             buttonArray[i] = new JButton("" + (i + 1));
             buttonArray[i].setBounds(90 * (i % 4) + 5, 90 * (i / 4) + 5, 85, 85);
             buttonArray[i].setBorder(solidBorder);
+            buttonArray[i].setFont(new Font("Courier New", 1, 20));
             buttonArray[i].addActionListener(e -> {
                 JButton clickedButton = (JButton) e.getSource();
                 String buttonText = clickedButton.getText();
+
                 makeMove(buttonText.equals("") ? 0 : Integer.parseInt(buttonText));
             });
             gamePanel.add(buttonArray[i]);
@@ -189,6 +191,7 @@ public class App4_4 extends JPanel {
             Labelmoves.setText("MOVES : " + this.moves);
             if (checkWinner()) {
                 JOptionPane.showMessageDialog(this, "You WIN!", "Winner!", JOptionPane.INFORMATION_MESSAGE);
+                parent.checkHighScore("4x4_multiplayer", this.moves);
             }
         }
         return 1;
