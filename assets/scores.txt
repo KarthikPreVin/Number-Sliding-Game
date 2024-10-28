@@ -1,2 +1,2 @@
-3x3_multiplayer,Keshav,23
-4x4_multiplayer,Karthik,90
+3x3_multiplayer,Keshav,5000
+4x4_multiplayer,KARTHIK,124
